@@ -134,6 +134,9 @@ If you encounter problems, open an issue on GitHub, and we'll address it promptl
 > [!TIP]
 > If you're having trouble, don't hesitate to reach out to us on [Discord](https://discord.gg/interstellar) for personalized support.
 
+### READ THIS!!!!
+in order for this to work, you need to go to the terminal. Then run the command: pnpm i && pnpm start   OR pnpm start. either one should work.
+
 # Credits
 
 A huge thanks goes out to all of the people who have contributed to Interstellar.
