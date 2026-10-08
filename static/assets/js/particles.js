@@ -895,9 +895,9 @@ function initShimmeringDotsSource() {
         const radius = Math.hypot(dx, dy);
         const angle = Math.atan2(dy, dx);
         const wave = Math.cos((tau * radius) / pitch - Math.max(1, Math.round(settings.arms)) * angle - spin);
-        const crest = Math.pow(Math.max(0, wave), Math.max(0.3, settings.width));
-        const coreFade = Math.pow(Math.min(1, radius / coreRadius), 2) * (3 - 2 * Math.min(1, radius / coreRadius));
-        const envelope = Math.exp(-Math.pow(radius / spread, 2)) * coreFade;
+        const crest = Math.max(0, wave) ** Math.max(0.3, settings.width);
+        const coreFade = Math.min(1, radius / coreRadius) ** 2 * (3 - 2 * Math.min(1, radius / coreRadius));
+        const envelope = Math.exp(-((radius / spread) ** 2)) * coreFade;
         const alpha = (settings.floor + (settings.peak - settings.floor) * crest * envelope) * settings.brightness;
         if (alpha > 0.01) {
           context.fillStyle = colorWithAlpha(alpha);
@@ -926,14 +926,14 @@ function initShimmeringDotsSource() {
         let intensity;
         if (pattern === "organic") {
           const n = Math.sin(cell.u * 3 * scale + fieldTime * 0.4) * Math.cos(cell.v * 3 * scale - fieldTime * 0.35) + 0.5 * Math.sin(cell.u * 7 * scale - fieldTime * 0.6) * Math.sin(cell.v * 7 * scale + fieldTime * 0.55);
-          intensity = (0.1 + Math.pow(Math.max(0, Math.sin(n * 6 + cell.length * 8 * scale - fieldTime * 1.8)), 1.8)) * clamp01(1 - cell.distance * 0.85 * settings.vignette);
+          intensity = (0.1 + Math.max(0, Math.sin(n * 6 + cell.length * 8 * scale - fieldTime * 1.8)) ** 1.8) * clamp01(1 - cell.distance * 0.85 * settings.vignette);
         } else if (pattern === "shimmer-aurora") {
-          let value = Math.sin(cell.u * 8 * scale + fieldTime * 1.3) + Math.sin(cell.v * 8 * scale + fieldTime * 1.1) + Math.sin((cell.u + cell.v) * 6 * scale + fieldTime * 1.5) + Math.sin(cell.length * 10 * scale - fieldTime * 1.8);
-          intensity = Math.pow(clamp01(0.5 + 0.125 * value), 2.5) * clamp01(1 - cell.distance * 0.9 * settings.vignette);
+          const value = Math.sin(cell.u * 8 * scale + fieldTime * 1.3) + Math.sin(cell.v * 8 * scale + fieldTime * 1.1) + Math.sin((cell.u + cell.v) * 6 * scale + fieldTime * 1.5) + Math.sin(cell.length * 10 * scale - fieldTime * 1.8);
+          intensity = clamp01(0.5 + 0.125 * value) ** 2.5 * clamp01(1 - cell.distance * 0.9 * settings.vignette);
         } else {
           const angle = Math.sin(cell.u * 4 * scale + fieldTime * 0.6) * 1.2 + Math.cos(cell.v * 4 * scale - fieldTime * 0.5) * 1.2 + Math.sin((cell.u + cell.v) * 3 * scale + fieldTime * 0.9);
           const phase = (cell.u * Math.cos(angle) + cell.v * Math.sin(angle)) * 12 * scale - fieldTime * 4;
-          const bright = Math.pow(0.5 + 0.5 * Math.sin(phase), 4);
+          const bright = (0.5 + 0.5 * Math.sin(phase)) ** 4;
           intensity = (0.1 + 1.1 * bright) * clamp01(1 - cell.distance * 0.7 * settings.vignette);
         }
         if (intensity > 0.01) {
@@ -955,13 +955,13 @@ function initShimmeringDotsSource() {
           const dy = floater.y - force.y;
           const distance = Math.hypot(dx, dy);
           if (distance > 0 && distance < 120) {
-            const strength = 470 * Math.pow(1 - distance / 120, 2);
+            const strength = 470 * (1 - distance / 120) ** 2;
             floater.vx += ((dx / distance) * strength * dt) / 1000;
             floater.vy += ((dy / distance) * strength * dt) / 1000;
           }
         }
-        floater.vx *= Math.pow(0.92, dt / 16);
-        floater.vy *= Math.pow(0.92, dt / 16);
+        floater.vx *= 0.92 ** (dt / 16);
+        floater.vy *= 0.92 ** (dt / 16);
         floater.x += (floater.vx * dt) / 1000;
         floater.y += (floater.vy * dt) / 1000;
         const wander = dt / 1000;

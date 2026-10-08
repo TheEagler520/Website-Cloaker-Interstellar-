@@ -2420,7 +2420,7 @@ function setupIdleCursorMotion() {
 
       function snap(now) {
         const progress = Math.min(1, (now - started) / duration);
-        const eased = 1 - Math.pow(1 - progress, 3);
+        const eased = 1 - (1 - progress) ** 3;
         visualX = startX + (nextX - startX) * eased;
         visualY = startY + (nextY - startY) * eased;
         emit(visualX, visualY);
